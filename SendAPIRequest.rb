@@ -4,7 +4,6 @@ class SendAPIRequest
   require 'net/https'
   require 'openssl'
   require 'json'
-  require 'mysql'
   load 'Models/DeleteDeliveryRequest.rb'
   load 'Models/DeliveryItem.rb'
   load 'Models/Item.rb'
@@ -20,6 +19,7 @@ class SendAPIRequest
         'Content-Type' => 'application/json',
         'X-API-KEY' => '9526ffb3bd4b540d9d13532d25104ab37381d75f18fdf1fc'
     }
+
   end
 
 
@@ -30,39 +30,48 @@ class SendAPIRequest
   # con.close
 
 
-@db_host  = "localhost"
-@db_user  = "root"
-@db_pass  = "root123"
-@db_name = "test_db"
-
-client = Mysql::Client.new(:host => @db_host, :username => @db_user, :password => @db_pass, :database => @db_name)
-@cdr_result = client.query("SELECT * from your_db_table_name")
+# @db_host  = "localhost"
+# @db_user  = "root"
+# @db_pass  = "root123"
+# @db_name = "test_db"
+#
+# client = Mysql::Client.new(:host => @db_host, :username => @db_user, :password => @db_pass, :database => @db_name)
+# @cdr_result = client.query("SELECT * from your_db_table_name")
 
   def Run
-    @date = '2016-03-01'
-    @do = 'DO140211001'
-    viewAllDeliveries(@date)
-    viewAllVehicles
+    #@date = '2017-04-26'
+    #@do = 'DO140211001'
+    #viewAllDeliveries(@date)
+    #viewAllVehicles
 
-    downloadDeliveryPODSignature(@date, @do)
+    #downloadDeliveryPODSignature(@date, @do)
 
     deliverItem = getSampleDeliveryItems
     addDeliveries(deliverItem)
 
-    viewAllDeliveries(@date)
 
-    updateItem = Item.new
-    updateItem.sku = 'T0201'
-    updateItem.desc = 'Test Item #01'
-    updateItem.qty = 1
-    deliverItem.items = [updateItem]
-    deliverItem.delivery_time = '12:00 PM - 03:00 PM'
-    editDeliveries(deliverItem)
 
-    viewAllDeliveries(@date)
+    # deliveries = getSampleDeliveryItems
+    # deliveries.each do |delivery|
+    #   addDeliveries(delivery)
+    # end
 
-    deleteDeliveryItem = getSampleDeleteDeliveryItems
-    deleteDeliveries(deleteDeliveryItem)
+    #print "addDeliveries"
+
+    #viewAllDeliveries(@date)
+
+    # updateItem = Item.new
+    # updateItem.sku = 'T0201'
+    # updateItem.desc = 'Test Item #01'
+    # updateItem.qty = 1
+    # deliverItem.items = [updateItem]
+    # deliverItem.delivery_time = '12:00 PM - 03:00 PM'
+    #editDeliveries(deliverItem)
+
+    # viewAllDeliveries(@date)
+
+    #deleteDeliveryItem = getSampleDeleteDeliveryItems
+    #deleteDeliveries(deleteDeliveryItem)
   end
 
   def consolePrint(res)
@@ -130,23 +139,48 @@ client = Mysql::Client.new(:host => @db_host, :username => @db_user, :password =
     return @deleteDeliverRequest
   end
 
+  # def getSampleDeliveryItems
+  #   deliveries = DeliveryItem.all
+  #   # @deliveryItem = DeliveryItem.new
+  #   # @deliveryItem.date = delivery.do
+  #   # @deliveryItem.do = 'DO140211001'
+  #   # @deliveryItem.delivery_time = '09:00 AM - 12:00 PM'
+  #   # @deliveryItem.deliver_to = 'John Tan'
+  #   # @deliveryItem.phone = '+6591234567'
+  #   # @deliveryItem.notify_email = 'john.tan@example.com'
+  #   # @deliveryItem.notify_url = 'http://www.example.com/notify.php'
+  #   # @deliveryItem.assign_to = '1111'
+  #   # @deliveryItem.instructions = 'Call customer upon arrival.'
+  #   # @deliveryItem.zone = 'East'
+  #   # @deliveryItem.address = '63 Ubi Avenue 1 Singapore 408937'
+  #   # @deliveryItem.items[0] = Item.new
+  #   # @deliveryItem.items[0].sku = 'T0200'
+  #   # @deliveryItem.items[0].desc = 'Test item #00'
+  #   # @deliveryItem.items[0].qty = 2
+  #   return deliveries
+  # end
+
   def getSampleDeliveryItems
-    @deliveryItem = DeliveryItem.new
-    @deliveryItem.date = '2016-03-01'
-    @deliveryItem.do = 'DO140211001'
-    @deliveryItem.delivery_time = '09:00 AM - 12:00 PM'
-    @deliveryItem.deliver_to = 'John Tan'
-    @deliveryItem.phone = '+6591234567'
-    @deliveryItem.notify_email = 'john.tan@example.com'
-    @deliveryItem.notify_url = 'http://www.example.com/notify.php'
-    @deliveryItem.assign_to = '1111'
-    @deliveryItem.instructions = 'Call customer upon arrival.'
-    @deliveryItem.zone = 'East'
-    @deliveryItem.address = '63 Ubi Avenue 1 Singapore 408937'
-    @deliveryItem.items[0] = Item.new
-    @deliveryItem.items[0].sku = 'T0200'
-    @deliveryItem.items[0].desc = 'Test item #00'
-    @deliveryItem.items[0].qty = 2
-    return @deliveryItem
-  end
+      @deliveryItem = DeliveryItem.new
+      @deliveryItem.date = '2017-04-25'
+      @deliveryItem.do = 'DO140211024'
+      @deliveryItem.delivery_time = '09:00 AM - 12:00 PM'
+      @deliveryItem.deliver_to = 'John Tan'
+      @deliveryItem.phone = '+6591234567'
+      @deliveryItem.notify_email = 'john.tan@example.com'
+      @deliveryItem.notify_url = 'http://www.example.com/notify.php'
+      @deliveryItem.assign_to = '1111'
+      @deliveryItem.instructions = 'Call customer upon arrival.'
+      @deliveryItem.zone = 'East'
+      @deliveryItem.address = '63 Ubi Avenue 1 Singapore 408937'
+      @deliveryItem.items[0] = Item.new
+      @deliveryItem.items[0].sku = 'T0200'
+      @deliveryItem.items[0].desc = 'Test item #00'
+      @deliveryItem.items[0].qty = 2
+      @deliveryItem.items[1] = Item.new
+      @deliveryItem.items[1].sku = 'T0200'
+      @deliveryItem.items[1].desc = 'Test item #00'
+      @deliveryItem.items[1].qty = 2
+      return @deliveryItem
+    end
 end

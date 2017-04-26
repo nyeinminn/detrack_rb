@@ -127,3 +127,11 @@ class DeliveryItem
     }.to_json
   end
 end
+
+# require 'active_record'
+# require './db_connect'
+#
+# class DeliveryItem < ActiveRecord::Base
+#   self.table_name = "delivery"
+
+# end
