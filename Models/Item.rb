@@ -27,3 +27,10 @@ class Item
     {'sku' => @sku, 'desc' => @desc, 'qty' => @qty.to_i}.to_json
   end
 end
+
+# require 'active_record'
+# require './db_connect'
+#
+# class Item < ActiveRecord::Base
+#   self.table_name = "item"
+# end

@@ -46,17 +46,43 @@ class SendAPIRequest
 
     #downloadDeliveryPODSignature(@date, @do)
 
-    deliverItem = getSampleDeliveryItems
-    addDeliveries(deliverItem)
+
+
+    # deliverItem = getSampleDeliveryItems
+    # addDeliveries(deliverItem)
+
+
+    #status check
+        # deliveries = getSampleDeliveryItems
+        # deliveries.each do |delivery|
+        #
+        #   # puts "devivery in database: #{hash.to_json}"
+        # end
+        #puts "Delivery in database:  #{deliveries.inspect}"
+        # puts "Delivery in database: #{deliveries.count}"
 
 
 
-    # deliveries = getSampleDeliveryItems
-    # deliveries.each do |delivery|
-    #   addDeliveries(delivery)
-    # end
+    deliveries = getSampleDeliveryItems
+    deliveries.each do |delivery|
+      hash = {
+        do: delivery.do,
+        address: delivery.address,
+        date: delivery.date,
+        delivery_to: delivery.deliver_to,
+        status: delivery.status,
+        zone: delivery.zone,
+        note: delivery.note
+      }
 
-    #print "addDeliveries"
+      # hash = {
+      #   do: delivery["Job ID"],
+      # }
+      # puts "Delivery #{hash}"
+      addDeliveries(hash)
+    end
+
+
 
     #viewAllDeliveries(@date)
 
@@ -139,48 +165,36 @@ class SendAPIRequest
     return @deleteDeliverRequest
   end
 
-  # def getSampleDeliveryItems
-  #   deliveries = DeliveryItem.all
-  #   # @deliveryItem = DeliveryItem.new
-  #   # @deliveryItem.date = delivery.do
-  #   # @deliveryItem.do = 'DO140211001'
-  #   # @deliveryItem.delivery_time = '09:00 AM - 12:00 PM'
-  #   # @deliveryItem.deliver_to = 'John Tan'
-  #   # @deliveryItem.phone = '+6591234567'
-  #   # @deliveryItem.notify_email = 'john.tan@example.com'
-  #   # @deliveryItem.notify_url = 'http://www.example.com/notify.php'
-  #   # @deliveryItem.assign_to = '1111'
-  #   # @deliveryItem.instructions = 'Call customer upon arrival.'
-  #   # @deliveryItem.zone = 'East'
-  #   # @deliveryItem.address = '63 Ubi Avenue 1 Singapore 408937'
-  #   # @deliveryItem.items[0] = Item.new
-  #   # @deliveryItem.items[0].sku = 'T0200'
-  #   # @deliveryItem.items[0].desc = 'Test item #00'
-  #   # @deliveryItem.items[0].qty = 2
-  #   return deliveries
-  # end
-
   def getSampleDeliveryItems
-      @deliveryItem = DeliveryItem.new
-      @deliveryItem.date = '2017-04-25'
-      @deliveryItem.do = 'DO140211024'
-      @deliveryItem.delivery_time = '09:00 AM - 12:00 PM'
-      @deliveryItem.deliver_to = 'John Tan'
-      @deliveryItem.phone = '+6591234567'
-      @deliveryItem.notify_email = 'john.tan@example.com'
-      @deliveryItem.notify_url = 'http://www.example.com/notify.php'
-      @deliveryItem.assign_to = '1111'
-      @deliveryItem.instructions = 'Call customer upon arrival.'
-      @deliveryItem.zone = 'East'
-      @deliveryItem.address = '63 Ubi Avenue 1 Singapore 408937'
-      @deliveryItem.items[0] = Item.new
-      @deliveryItem.items[0].sku = 'T0200'
-      @deliveryItem.items[0].desc = 'Test item #00'
-      @deliveryItem.items[0].qty = 2
-      @deliveryItem.items[1] = Item.new
-      @deliveryItem.items[1].sku = 'T0200'
-      @deliveryItem.items[1].desc = 'Test item #00'
-      @deliveryItem.items[1].qty = 2
-      return @deliveryItem
-    end
+
+    # join query
+    # sql = "SELECT * FROM DeliveryJobDetails where Status = 'Scheduled'"
+    #
+    # records_array = ActiveRecord::Base.connection.exec_query(sql)
+    # puts "Resultset #{records_array.to_json}"
+    #
+    # deliveries = DeliveryItem.find_by_sql(sql)
+
+
+    deliveries = DeliveryItem.where(status: 'Scheduled')
+    @deliveryItem = DeliveryItem.new
+    # @deliveryItem = deliveries.do
+    # @deliveryItem = deliveries.date
+    # @deliveryItem.date = delivery.date
+    # @deliveryItem.do = 'DO140211001'
+    # @deliveryItem.delivery_time = '09:00 AM - 12:00 PM'
+    # @deliveryItem.deliver_to = 'John Tan'
+    # @deliveryItem.phone = '+6591234567'
+    # @deliveryItem.notify_email = 'john.tan@example.com'
+    # @deliveryItem.notify_url = 'http://www.example.com/notify.php'
+    # @deliveryItem.assign_to = '1111'
+    # @deliveryItem.instructions = 'Call customer upon arrival.'
+    # @deliveryItem.zone = 'East'
+    # @deliveryItem.address = '63 Ubi Avenue 1 Singapore 408937'
+    # @deliveryItem.items[0] = Item.new
+    # @deliveryItem.items[0].sku = 'T0200'
+    # @deliveryItem.items[0].desc = 'Test item #00'
+    # @deliveryItem.items[0].qty = 2
+    return deliveries
+  end
 end
